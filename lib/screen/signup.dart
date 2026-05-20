@@ -21,16 +21,26 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String? error;
 
-  bool validEmail(String e) =>
-      e.endsWith("@gmail.com") || e.endsWith("@email.com");
+  // EMAIL OR PHONE VALIDATION
+  bool validInput(String value) {
+    bool emailValid =
+        value.endsWith("@gmail.com") ||
+            value.endsWith("@email.com");
 
+    bool phoneValid =
+    RegExp(r'^[0-9]{10}$').hasMatch(value);
+
+    return emailValid || phoneValid;
+  }
+
+  // PASSWORD VALIDATION
   bool strong(String p) =>
       p.length >= 8 &&
           RegExp(r'[A-Z]').hasMatch(p) &&
           RegExp(r'[0-9]').hasMatch(p) &&
           RegExp(r'[!@#\$&*]').hasMatch(p);
 
-  // NAME VALIDATION (still active)
+  // NAME VALIDATION
   bool validName(String name) {
     return name.trim().length >= 4;
   }
@@ -57,13 +67,15 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
 
-    if (!validEmail(email.text)) {
-      setState(() => error = "Invalid email domain");
+    if (!validInput(email.text)) {
+      setState(() => error =
+      "Enter valid email or 10-digit phone number");
       return;
     }
 
     if (!strong(pass.text)) {
-      setState(() => error = "Weak password");
+      setState(() => error =
+      "Password must contain:\n8 characters, capital letter, number and symbol");
       return;
     }
 
@@ -85,89 +97,212 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  // TEXTFIELD STYLE
+  InputDecoration fieldStyle(String label) {
+    return InputDecoration(
+      labelText: label,
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding:
+      const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFE8F5E9), // farming green background
+
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: ListView(
-            children: [
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
 
-              const Text("Sign Up", style: TextStyle(fontSize: 28)),
-
-              TextField(
-                controller: first,
-                decoration: const InputDecoration(labelText: "First Name"),
+            child: Card(
+              elevation: 12,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
               ),
 
-              TextField(
-                controller: last,
-                decoration: const InputDecoration(labelText: "Last Name"),
-              ),
+              child: Padding(
+                padding: const EdgeInsets.all(25),
 
-              TextField(
-                controller: email,
-                decoration: const InputDecoration(labelText: "Email"),
-              ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
 
-              TextField(
-                controller: pass,
-                obscureText: !showPass,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      showPass ? Icons.visibility : Icons.visibility_off,
+                    // FARM ICON
+                    const Icon(
+                      Icons.agriculture,
+                      size: 80,
+                      color: Colors.green,
                     ),
-                    onPressed: () => setState(() => showPass = !showPass),
-                  ),
+
+                    const SizedBox(height: 10),
+
+                    // TITLE
+                    const Text(
+                      "Create Account",
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // FIRST NAME
+                    TextField(
+                      controller: first,
+                      decoration: fieldStyle("First Name"),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // LAST NAME
+                    TextField(
+                      controller: last,
+                      decoration: fieldStyle("Last Name"),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // EMAIL OR PHONE
+                    TextField(
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration:
+                      fieldStyle("Email or Phone Number"),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // PASSWORD
+                    TextField(
+                      controller: pass,
+                      obscureText: !showPass,
+
+                      decoration: fieldStyle("Password").copyWith(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            showPass
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              showPass = !showPass;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // CONFIRM PASSWORD
+                    TextField(
+                      controller: confirm,
+                      obscureText: !showConfirm,
+
+                      decoration:
+                      fieldStyle("Confirm Password").copyWith(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            showConfirm
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              showConfirm = !showConfirm;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // ERROR MESSAGE
+                    if (error != null)
+                      Text(
+                        error!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                    const SizedBox(height: 25),
+
+                    // SIGNUP BUTTON
+                    SizedBox(
+                      width: double.infinity,
+                      height: 55,
+
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(14),
+                          ),
+                        ),
+
+                        onPressed: signUp,
+
+                        child: const Text(
+                          "Create Account",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // LOGIN
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Already have an account?",
+                        ),
+
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                const LoginPage(),
+                              ),
+                            );
+                          },
+
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-
-              TextField(
-                controller: confirm,
-                obscureText: !showConfirm,
-                decoration: InputDecoration(
-                  labelText: "Confirm Password",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      showConfirm ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () => setState(() => showConfirm = !showConfirm),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              if (error != null)
-                Text(error!, style: const TextStyle(color: Colors.red)),
-
-              const SizedBox(height: 20),
-
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: signUp,
-                child: const Text("Create Account"),
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoginPage()),
-                      );
-                    },
-                    child: const Text("Login"),
-                  ),
-                ],
-              )
-            ],
+            ),
           ),
         ),
       ),

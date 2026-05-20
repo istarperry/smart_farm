@@ -1,6 +1,5 @@
-environment:
-  sdk: ">=3.0.0 <4.0.0"name: smart_farm
-description: A Flutter authentication demo app with login, signup and forgot password
+name: smart_farm
+description: Smart Farm App
 
 publish_to: "none"
 
@@ -13,11 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # UI icons
   cupertino_icons: ^1.0.8
-
-  # LOCAL STORAGE (for remember login, saved user, password reset)
   shared_preferences: ^2.2.3
+  http: ^1.2.1
+  intl: ^0.18.1
+  webview_flutter: ^4.4.2
 
 dev_dependencies:
   flutter_test:

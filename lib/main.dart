@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'screen/signup.dart';
+
+import 'screen/login.dart';
 
 void main() {
-  runApp(const SmartFarmApp());
+  runApp(const MyApp());
 }
 
-class SmartFarmApp extends StatelessWidget {
-  const SmartFarmApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      // START APP HERE
-      home: const SignUpPage(),
-
-      // OPTIONAL ROUTES (for future navigation)
-      routes: {
-        '/signup': (context) => const SignUpPage(),
-      },
+      // ALWAYS START HERE (NO CONDITIONS)
+      home: LoginPage(),
     );
   }
 }

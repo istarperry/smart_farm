@@ -14,7 +14,7 @@ class SmartFarmApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Smart Farm',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: const MainDashboard(),
+      home: const DashboardPage(),
     );
   }
 }
