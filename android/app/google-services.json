@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "61628360644",
+    "firebase_url": "https://smartfarm-4e160-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "smartfarm-4e160",
+    "storage_bucket": "smartfarm-4e160.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61628360644:android:b877645b2dca0fab1a6691",
+        "android_client_info": {
+          "package_name": "com.example.smart_farm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4lfrHk2P1r6KTryhEJzz-hIkhvR8S3hE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
